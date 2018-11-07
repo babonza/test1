@@ -1,53 +1,66 @@
-<?php 
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head><title>.:: PHP Server Monitor :..</title></head> <div align="center">
+  <p><font color="#003366" size="6" face="Verdana, Arial, Helvetica, sans-serif"><em><strong>School Server Monitor</strong></em></font></p>
+  <p><font face="Verdana, Arial, Helvetica, sans-serif"><img src="Images/server.jpg"></font></p><p></p> <font face="Verdana, Arial, Helvetica, sans-serif">
+<?php
+$system = ini_get('system');
+$win  = is_bool($system);
+$count = 1;
 
-//Config information
-$email = "damar.santoso@metrodata.com";
-$server = "google.com"; //the address to test, without the "http://"
-$port = "80";
+// -------------------------
+// Type in the name of the servers inside the quotation marks. 
+// Add or remove as many as you want but make sure they have an added "services" entry.
+// -------------------------
+$host[1] = "google.com";
+$host[2] = "detik.com";
+$host[3] = "Server3";
+$host[4] = "Server4";
+$host[5] = "Server5";
+$host[6] = "Server6";
+$host[7] = "Server7";
+$host[8] = "Server8";
+$host[9] = "Server9";
+$host[10] = "Server10";
+// -------------------------
+// Type in the function of each server inside the quotation marks.
+// -------------------------
+$services[1] = "User Documents, T: Drive";
+$services[2] = "Active Directory";
+$services[3] = "Backup Active Directory";
+$services[4] = "Email, Webmail";
+$services[5] = "Sims, Payroll, G: Drive";
+$services[6] = "Sharepoint VLE 2003";
+$services[7] = "Sharepoint VLE 2007 Test";
+$services[8] = "Oliver Library Database";
+$services[9] = "Backup, Shared Printers";
+$services[10] = "User Settings";
 
-
-//Create a text file to store the result of the ping for comparison
-$db = "pingdata.txt";
-
-if (file_exists($db)):
-    $previous_status = file_get_contents($db, true);
-else:
-    file_put_contents($db, "up");
-    $previous_status = "up";
-endif;
-
-//Ping the server and check if it's up
-$current_status =  ping($server, $port, 10);
-
-//If it's down, log it and/or email the owner
-if ($current_status == "down"):
-
-    echo "Server is down! ";
-    file_put_contents($db, "down");
-
-    if ($previous_status == "down"):
-        mail($email, "Server is down", "Your server is down.");
-        echo "Email sent.";     
-    endif;  
-
-else:
-
-    echo "Server is up! ";
-    file_put_contents($db, "up");
-
-    if ($previous_status == "down"):
-        mail($email, "Server is up", "Your server is back up.");
-        echo "Email sent.";
-    endif;
-
-endif;
-
-
-function ping($host, $port, $timeout)
-{ 
-  $tB = microtime(true); 
-  $fP = fSockOpen($host, $port, $errno, $errstr, $timeout); 
-  if (!$fP) { return "down"; } 
-  $tA = microtime(true); 
-  return round((($tA - $tB) * 1000), 0)." ms"; 
+// You don't need to edit anything beyond here
+echo "<table border=\"0\" align=\"center\">";
+foreach ($host as $value) 
+{
+	 $counter = $count + 1;
+	  echo "<tr><td width=120>$value</td>"; 
+      echo '<body bgcolor="#FFFFFF" text="#000000"></body>';       
+      //check target IP or domain
+	  $pingreply = exec("ping -n $count $value");
+	  if ( substr($pingreply, -2) == 'ms')
+  		{
+			#echo "<td width=60><strong><font color='#006600'>UP</font></strong></td>";
+			echo "<td width=60><img src='up.png'></td>";
+			echo "<td width=230>". $services[$counter] . "</td>";
+		    echo "<td>Reply Speed ";
+		    echo substr($pingreply, -13);
+		}
+	  else 
+		{
+			#echo "<td width=60><strong><font color='#990000'>DOWN</font></strong></td>";
+			echo "<td width=60><img src='down.jpg'></td>";
+			echo "<td width=230>". $services[$counter] . "</td>";
+		    echo "<td>";
+			echo "Timeout...";
+		}
 }
+echo "</td></tr></table>";
+?>
+</font></div>
