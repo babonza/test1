@@ -8,7 +8,7 @@ $win  = is_bool($system);
 $count = 1;
 
 // -------------------------
-// Type in the name of the servers inside the quotation marks. 
+// Type in the name of the servers inside the quotation marks.
 // Add or remove as many as you want but make sure they have an added "services" entry.
 // -------------------------
 $host[1] = "google.com";
@@ -37,11 +37,11 @@ $services[10] = "User Settings";
 
 // You don't need to edit anything beyond here
 echo "<table border=\"0\" align=\"center\">";
-foreach ($host as $value) 
+foreach ($host as $value)
 {
 	 $counter = $count + 1;
-	  echo "<tr><td width=120>$value</td>"; 
-      echo '<body bgcolor="#FFFFFF" text="#000000"></body>';       
+	  echo "<tr><td width=120>$value</td>";
+      echo '<body bgcolor="#FFFFFF" text="#000000"></body>';
       //check target IP or domain
 	  $pingreply = exec("ping -n $count $value");
 	  if ( substr($pingreply, -2) == 'ms')
@@ -52,7 +52,7 @@ foreach ($host as $value)
 		    echo "<td>Reply Speed ";
 		    echo substr($pingreply, -13);
 		}
-	  else 
+	  else
 		{
 			#echo "<td width=60><strong><font color='#990000'>DOWN</font></strong></td>";
 			echo "<td width=60><img src='down.jpg'></td>";
